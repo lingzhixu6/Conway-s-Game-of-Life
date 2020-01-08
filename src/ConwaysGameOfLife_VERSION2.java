@@ -167,7 +167,7 @@ public class ConwaysGameOfLife_VERSION2 extends JFrame implements ActionListener
     }
 
     private class GameBoard extends JPanel {
-        private volatile Dimension d_gameBoardSize = null;                       //Only modified by one thread and read by multiple threads. Thus 'volatile' can be applied to it.
+        private volatile Dimension d_gameBoardSize = new Dimension(getWidth() / BLOCK_SIZE - 2, getHeight() / BLOCK_SIZE - 2);;                       //Only modified by one thread and read by multiple threads. Thus 'volatile' can be applied to it.
         private ArrayList<Point> point = new ArrayList<Point>(0);
         private GameBoardListener gameBoardListener = new GameBoardListener();
         private final Object paintLock = new Object();
