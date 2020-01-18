@@ -1,10 +1,14 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URI;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ConcurrentModificationException;
 import javax.swing.*;
+import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -301,7 +305,8 @@ public class ConwaysGameOfLife_VERSION2 extends JFrame implements ActionListener
 
         @Override
         public void run() {
-            while (true) {
+            Instant start = Instant.now();
+            for (int x = 0; x<10000; x++) {
                 lockObj.lock();
                 boolean[][] gameBoard;
                 gameBoard = new boolean[d_gameBoardSize.width + 2][d_gameBoardSize.height + 2];
@@ -353,14 +358,17 @@ public class ConwaysGameOfLife_VERSION2 extends JFrame implements ActionListener
                 resetBoard();
                 point.addAll(survivingCells);
                 repaint();
-                try {
-                    Thread.sleep(1000 / i_movesPerSecond);
-                } catch (InterruptedException ex) {              //InterruptedException means that another thread is trying to shut down this thread.
-                    break;
-                }
+//                try {
+//                    Thread.sleep(1000 / i_movesPerSecond);
+//                } catch (InterruptedException ex) {              //InterruptedException means that another thread is trying to shut down this thread.
+//                    break;
+//                }
                 lockObj.unlock();
                 System.out.println("user thread unlocked!");
             }
+            Instant end = Instant.now();
+            long milli = ChronoUnit.MILLIS.between(start, end);
+            System.err.format(Locale.ENGLISH, "elapsed time: %.3f%n", milli / 1000.0);
         }
     }
 }
